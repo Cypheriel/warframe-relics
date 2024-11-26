@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dataSource name="D1 JDBC Data Source">
+  <database-model serializer="dbm" dbms="UNKNOWN" family-id="UNKNOWN" format-version="4.53">
+    <root id="1">
+      <DefaultCasing>mixed/mixed</DefaultCasing>
+      <ServerVersion>0.0</ServerVersion>
+    </root>
+    <database id="2" parent="1">
+      <Current>1</Current>
+    </database>
+    <schema id="3" parent="2">
+      <Current>1</Current>
+      <LastIntrospectionLocalTimestamp>2024-11-26.04:48:04</LastIntrospectionLocalTimestamp>
+    </schema>
+    <table id="4" parent="3" name="_cf_KV"/>
+    <table id="5" parent="3" name="sessions"/>
+    <table id="6" parent="3" name="sqlite_schema"/>
+    <table id="7" parent="3" name="sqlite_temp_schema"/>
+    <table id="8" parent="3" name="users"/>
+    <column id="9" parent="5" name="id">
+      <Position>1</Position>
+      <StoredType>STRING(0)|2s</StoredType>
+    </column>
+    <column id="10" parent="5" name="user_uuid">
+      <NotNull>1</NotNull>
+      <Position>2</Position>
+      <StoredType>STRING(0)|2s</StoredType>
+    </column>
+    <column id="11" parent="5" name="expires_on">
+      <DefaultExpression>&apos;datetime(&apos;now+0000-00-30&apos;)&apos;</DefaultExpression>
+      <NotNull>1</NotNull>
+      <Position>3</Position>
+      <StoredType>STRING(0)|2s</StoredType>
+    </column>
+    <key id="12" parent="5" name="id">
+      <ColNames>id</ColNames>
+      <Primary>1</Primary>
+    </key>
+    <column id="13" parent="8" name="uuid">
+      <Position>1</Position>
+      <StoredType>STRING(0)|2s</StoredType>
+    </column>
+    <column id="14" parent="8" name="email">
+      <NotNull>1</NotNull>
+      <Position>2</Position>
+      <StoredType>STRING(0)|2s</StoredType>
+    </column>
+    <column id="15" parent="8" name="password_hash">
+      <NotNull>1</NotNull>
+      <Position>3</Position>
+      <StoredType>STRING(0)|2s</StoredType>
+    </column>
+    <column id="16" parent="8" name="username">
+      <DefaultExpression>&apos;NULL&apos;</DefaultExpression>
+      <Position>4</Position>
+      <StoredType>STRING(0)|2s</StoredType>
+    </column>
+    <column id="17" parent="8" name="creation_date">
+      <DefaultExpression>&apos;datetime(&apos;now&apos;)&apos;</DefaultExpression>
+      <NotNull>1</NotNull>
+      <Position>5</Position>
+      <StoredType>STRING(0)|2s</StoredType>
+    </column>
+    <key id="18" parent="8" name="uuid">
+      <ColNames>uuid</ColNames>
+      <Primary>1</Primary>
+    </key>
+  </database-model>
+</dataSource>

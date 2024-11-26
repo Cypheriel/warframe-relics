@@ -1,0 +1,6 @@
+name = "relics"
+
+[[d1_databases]]
+binding = "DATABASE"
+database_name = "relics-db"
+database_id = "71dcc9b9-852a-4fd3-b7a6-07b27d96336f"

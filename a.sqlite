@@ -1,0 +1,22 @@
+PRAGMA defer_foreign_keys=TRUE;
+CREATE TABLE users
+(
+    uuid          STRING PRIMARY KEY,
+    email         STRING NOT NULL UNIQUE,
+    password_hash STRING NOT NULL,
+    username      STRING UNIQUE,
+    creation_date STRING NOT NULL DEFAULT (datetime('now'))
+);
+INSERT INTO users VALUES('aaa05dc5-d9f5-51d9-9690-2737affcffe0','mikel@cypheriel.dev','This is a hash.',NULL,'2024-11-26 03:20:14');
+INSERT INTO users VALUES('3d7582bb-3939-5eef-976f-11b170cc15b2','mikel@cypheriel.dev2','This is a hash.',NULL,'2024-11-26 03:22:46');
+INSERT INTO users VALUES('74e0feb8-f5dc-5e04-94d9-39958174bc18','mikel3@cypheriel.dev','$argon2id$v=19$m=19456,t=2,p=1$mdvqZLn4LXP6Sqs0xPitMQ$I7nZ5UU7CaU4+23mjd1lQmtnrNWA6A4yy/2beK9buKM',NULL,'2024-11-26 07:15:03');
+CREATE TABLE sessions
+(
+    id         STRING PRIMARY KEY,
+    user_uuid  STRING NOT NULL,
+    expires_on STRING NOT NULL DEFAULT (datetime('now+0000-00-30')),
+    FOREIGN KEY (user_uuid) REFERENCES users (uuid)
+);
+INSERT INTO sessions VALUES('85713a557545200b70912745200f35dc694f20038f64a9b708a9dcfa04bdf058','aaa05dc5-d9f5-51d9-9690-2737affcffe0','2024-12-26T04:47:29.809Z');
+CREATE INDEX idx_users_email ON users (email);
+CREATE INDEX idx_users_username ON users (username);

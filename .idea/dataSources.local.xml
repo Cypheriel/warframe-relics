@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="dataSourceStorageLocal" created-in="WS-243.21565.180">
+    <data-source name="D1 JDBC Data Source" uuid="f1b3ba7c-e206-4afa-b032-9e68c3032610">
+      <database-info product="Cloudflare D1" version="" jdbc-version="0.0" driver-name="D1 JDBC Driver" driver-version="1.0" dbms="UNKNOWN" exact-version="0.0" exact-driver-version="1.0">
+        <identifier-quote-string>&quot;</identifier-quote-string>
+      </database-info>
+      <case-sensitivity plain-identifiers="mixed" quoted-identifiers="mixed" />
+      <secret-storage>master_key</secret-storage>
+      <user-name>b1a7f24ebd961510d1d93a3c1838b782</user-name>
+      <schema-mapping>
+        <introspection-scope>
+          <node kind="database" negative="1">
+            <node kind="schema" negative="1" />
+          </node>
+        </introspection-scope>
+      </schema-mapping>
+    </data-source>
+  </component>
+</project>
