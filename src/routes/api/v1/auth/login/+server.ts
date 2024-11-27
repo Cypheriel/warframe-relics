@@ -2,7 +2,6 @@ import { encodeHexLowerCase } from "@oslojs/encoding";
 import { sha256 } from "@oslojs/crypto/sha2";
 import { v4 as uuidv4 } from "uuid";
 import { setSessionTokenCookie } from "$lib/server/session";
-import * as argon2 from "@node-rs/argon2";
 
 /** @type {import("./$types").RequestHandler} */
 export async function POST({ request, cookies, platform }) {
@@ -23,7 +22,7 @@ export async function POST({ request, cookies, platform }) {
 
     if (user == null) {
         return new Response("No user is registered under the specified email.", { status: 400 });
-    } else if (await argon2.verify(user["password_hash"], password)) {
+    } else if (user["password_hash"] == encodeHexLowerCase(sha256(new TextEncoder().encode(password)))) {
         // Create session
         const sessionToken = uuidv4();
         const sessionId = encodeHexLowerCase(sha256(new TextEncoder().encode(sessionToken)));

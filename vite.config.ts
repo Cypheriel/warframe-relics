@@ -3,7 +3,9 @@ import { defineConfig } from "vite";
 
 export default defineConfig({
     plugins: [sveltekit()],
-    optimizeDeps: {
-        exclude: ["oslo", "@node-rs/argon2", "@node-rs/bcrypt"]
-    },
+    build: {
+        rollupOptions: {
+            external: ["oslo", "@node-rs/argon2", "@node-rs/argon2-wasm32-wasi"],
+        },
+    }
 });

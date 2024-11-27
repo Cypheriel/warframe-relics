@@ -1,7 +1,4 @@
 import { type Actions, fail, redirect, type RequestEvent } from "@sveltejs/kit";
-import { v4 as uuidv4 } from "uuid";
-import { setSessionTokenCookie } from "$lib/server/session";
-import { hash } from "@node-rs/argon2";
 
 export const actions: Actions = {
     default: action,
