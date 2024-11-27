@@ -64,7 +64,7 @@ export async function verifySessionCookie(cookies: Cookies, db: D1Database): Pro
                 SET expires_on = ?
                 WHERE id = ?;
             `)
-            .bind(new Date(expiration), sessionId)
+            .bind(new Date(expiration).toISOString(), sessionId)
             .run();
     }
 
