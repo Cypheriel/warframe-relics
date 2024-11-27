@@ -1,8 +1,9 @@
 <script lang="ts">
+    import type { ActionData } from "./$types";
     import { applyAction, enhance } from "$app/forms";
     import { goto } from "$app/navigation";
 
-    export let form;
+    export let form: ActionData;
 
     let isSubmitting = false;
 </script>

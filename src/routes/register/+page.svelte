@@ -1,11 +1,28 @@
 <script lang="ts">
     import type { ActionData } from "./$types";
-    import { enhance } from "$app/forms";
+    import { applyAction, enhance } from "$app/forms";
+    import { goto } from "$app/navigation";
 
     export let form: ActionData;
+    let isSubmitting = false;
 </script>
 
-<form method="POST" use:enhance>
+<form method="POST" use:enhance={({cancel}) => {
+	if (isSubmitting) {
+		cancel();
+	} else {
+		isSubmitting = true;
+	}
+
+	return async ({ result }) => {
+		if (result.type === 'redirect') {
+			await goto(result.location);
+		} else {
+			isSubmitting = false
+			await applyAction(result);
+		}
+	}
+}}>
 	<div class="flex flex-col justify-center items-center h-screen">
 		<div class="flex flex-col w-1/5 gap-y-4">
 			<h1 class="text-6xl font-bold text-center mb-8">Register</h1>
