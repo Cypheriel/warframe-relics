@@ -33,21 +33,44 @@ export async function verifySessionCookie(cookies: Cookies, db: D1Database): Pro
         return null;
     }
 
+    const sessionId = encodeHexLowerCase(sha256(new TextEncoder().encode(sessionToken)))
+
     const sessionRecord = await db.prepare(`
         SELECT *
         FROM sessions
         WHERE id = ?;
     `)
-        .bind(encodeHexLowerCase(sha256(new TextEncoder().encode(sessionToken))))
+        .bind(sessionId)
         .first();
 
     if (sessionRecord == null) {
         return null;
     }
 
+    let expiration = Date.parse(<string>sessionRecord["expires_on"]);
+
+    // Check if session has expired.
+    if (Date.now() > expiration) {
+        deleteSessionTokenCookie(cookies);
+        return null;
+    }
+
+    if (Date.now() > expiration - 1000 * 60 * 60 * 24 * 14) {
+        expiration = Date.now() + 1000 * 60 * 60 * 24 * 30;
+        setSessionTokenCookie(cookies, sessionToken, new Date(expiration));
+        await db
+            .prepare(`
+                UPDATE sessions
+                SET expires_on = ?
+                WHERE id = ?;
+            `)
+            .bind(new Date(expiration), sessionId)
+            .run();
+    }
+
     return {
         id: sessionRecord["id"] as string,
         userUuid: sessionRecord["user_uuid"] as string,
-        expiresOn: sessionRecord["expires_on"] as Date
-    }
+        expiresOn: new Date(expiration),
+    };
 }
