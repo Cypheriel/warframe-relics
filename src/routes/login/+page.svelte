@@ -1,10 +1,21 @@
 <script lang="ts">
     import { enhance } from "$app/forms";
 
-    export let form: ActionData;
+    export let form;
+
+    let isSubmitting = false;
 </script>
 
-<form method="POST" use:enhance>
+<form method="POST" use:enhance={({cancel}) => {
+	if (isSubmitting) {
+		cancel();
+	}
+	isSubmitting = true;
+
+	return async () => {
+		isSubmitting = false;
+	}
+}}>
 	<div class="flex flex-col justify-center items-center h-screen">
 		<div class="flex flex-col w-1/5 gap-y-4">
 			<h1 class="text-6xl font-bold text-center mb-8">Log In</h1>
