@@ -1,5 +1,6 @@
 <script lang="ts">
-    import { enhance } from "$app/forms";
+    import { applyAction, enhance } from "$app/forms";
+    import { goto } from "$app/navigation";
 
     export let form;
 
@@ -9,11 +10,17 @@
 <form method="POST" use:enhance={({cancel}) => {
 	if (isSubmitting) {
 		cancel();
+	} else {
+		isSubmitting = true;
 	}
-	isSubmitting = true;
 
-	return async () => {
-		isSubmitting = false;
+	return async ({ result }) => {
+		if (result.type === 'redirect') {
+			await goto(result.location);
+		} else {
+			isSubmitting = false
+			await applyAction(result);
+		}
 	}
 }}>
 	<div class="flex flex-col justify-center items-center h-screen">
