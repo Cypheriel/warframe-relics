@@ -33,7 +33,7 @@ export async function verifySessionCookie(cookies: Cookies, db: D1Database): Pro
         return null;
     }
 
-    const sessionId = encodeHexLowerCase(sha256(new TextEncoder().encode(sessionToken)))
+    const sessionId = encodeHexLowerCase(sha256(new TextEncoder().encode(sessionToken)));
 
     const sessionRecord = await db.prepare(`
         SELECT *
@@ -52,6 +52,14 @@ export async function verifySessionCookie(cookies: Cookies, db: D1Database): Pro
     // Check if session has expired.
     if (Date.now() > expiration) {
         deleteSessionTokenCookie(cookies);
+        await db
+            .prepare(`
+                DELETE FROM sessions
+                WHERE id = ?;
+            `)
+            .bind(sessionId)
+            .run();
+
         return null;
     }
 
