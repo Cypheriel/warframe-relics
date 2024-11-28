@@ -22,7 +22,11 @@ export async function POST({ request, cookies, platform }) {
 
     if (user == null) {
         return new Response("No user is registered under the specified email.", { status: 400 });
-    } else if (user["password_hash"] == encodeHexLowerCase(sha256(new TextEncoder().encode(password)))) {
+    }
+
+    const verified = (await fetch(`https://argon2.cypheriel.dev/verify?value=${password}&hash=${encodeURIComponent(user["password_hash"])}`)).status == 200;
+
+    if (verified) {
         // Create session
         const sessionToken = uuidv4();
         const sessionId = encodeHexLowerCase(sha256(new TextEncoder().encode(sessionToken)));
@@ -39,8 +43,8 @@ export async function POST({ request, cookies, platform }) {
 
         return success
             ? new Response(JSON.stringify({ token: sessionToken }), { status: 200 })
-            : new Response("An unknown error has occurred. Case #2", { status: 500 });
+            : new Response("An unknown error has occurred. Case #1", { status: 500 });
     }
 
-    return new Response("An unknown error has occurred. Case #1", { status: 500 });
+    return new Response("Incorrect password.", { status: 401 });
 }

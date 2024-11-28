@@ -1,6 +1,4 @@
 import { v5 as uuidv5 } from "uuid";
-import { sha256 } from "@oslojs/crypto/sha2";
-import { encodeHexLowerCase } from "@oslojs/encoding";
 
 const USER_NAMESPACE = "d38d411b-aa01-48c7-8980-aa2e7154a29f";
 
@@ -25,7 +23,7 @@ export async function POST({ request, platform }) {
     if (existing.length != 0)
         return new Response("A user has already been registered under this email.", { status: 409 });
 
-    const passwordHash = encodeHexLowerCase(sha256(new TextEncoder().encode(password)));
+    const passwordHash = await (await fetch(`https://argon2.cypheriel.dev/hash?value=${password}`)).text();
 
     const result = await db.prepare(`
         INSERT INTO users (uuid, email, password_hash)

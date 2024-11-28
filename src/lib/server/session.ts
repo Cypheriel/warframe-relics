@@ -54,7 +54,8 @@ export async function verifySessionCookie(cookies: Cookies, db: D1Database): Pro
         deleteSessionTokenCookie(cookies);
         await db
             .prepare(`
-                DELETE FROM sessions
+                DELETE
+                FROM sessions
                 WHERE id = ?;
             `)
             .bind(sessionId)
