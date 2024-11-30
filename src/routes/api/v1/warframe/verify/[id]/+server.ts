@@ -21,7 +21,7 @@ export async function GET({ fetch, params }) {
                 status: 204,
             })
         : new Response(
-            null,
+            `hash=${hash},content=${content},response=${body}`,
             {
                 status: 400,
             });
