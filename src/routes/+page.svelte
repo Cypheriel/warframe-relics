@@ -1,34 +1,29 @@
 <script lang="ts">
+    import { encodeHexLowerCase } from "@oslojs/encoding";
+
     let { data } = $props();
     import { copy } from "svelte-copy";
+    import { sha1 } from "@oslojs/crypto/sha1";
 
-    let code = Math.random().toString(36).slice(2, 8).toUpperCase();
     let profile = $state("");
-    const profileIdRegExp = /profile\/(\d{1,8})/;
-    const verifyCodeRegExp = /<p>[\s\b]+([A-Z0-9]+)\s<\/p>/;
+    const profileIdRegExp = /profile\/(\d{1,8})-([^/?]+)/;
 
     function getProfileId(url: string) {
-        return (profileIdRegExp.exec(url) ?? [])[1];
+        const matches = profileIdRegExp.exec(url) ?? []
+        return matches[1];
     }
 
     async function verifyCode(): Promise<boolean> {
-        const profileUrl = `https://cors-anywhere.herokuapp.com/https://forums.warframe.com/profile/${getProfileId(profile)}-undefined/?tab=field_core_pfield_1&code=${code}`
-				console.log(`Profile URL: ${profileUrl}`);
         const response = await fetch(
-            profileUrl, {
+            `/api/v1/warframe/verify/${getProfileId(profile)}`,
+            {
                 headers: {
-                    "Origin": "https://cors-anywhere.herokuapp.com",
-										"X-Requested-With": "XMLHttpRequest",
-										"Pragma": "no-cache",
-										"Cache-Control": "no-cache",
+                    "Access-Control-Allow-Origin": "*",
 								}
-						});
+						}
+				)
 
-        const body = await response.text()
-				console.log(body)
-        const content = (verifyCodeRegExp.exec(body) ?? [])[1]
-				console.log(content)
-				return content == code
+				return response.ok
     }
 
     let verified = $state(false);
@@ -83,13 +78,17 @@
 			<a class="underline" target="_blank" rel="noopener noreferrer"
 				 href="https://forums.warframe.com/profile/{getProfileId(profile)}-undefined/edit/">About Me</a>
 		</li>
+		<li>Click the button below to attempt verification</li>
+		<li>If successful, you may remove the code from your about me</li>
 	</ol>
+	{#if profile}
 	<a href={"javascript:void(0)"} class="underline tooltip tooltip-right text-5xl my-4" data-tip="Click to copy" use:copy={{
-		text: code,
+		text: encodeHexLowerCase(sha1(new TextEncoder().encode(getProfileId(profile)))),
 		onCopy: function () {
 			alert("Code copied to clipboard.")
 		},
-	}}><code>{code}</code></a>
+	}}><code>{encodeHexLowerCase(sha1(new TextEncoder().encode(getProfileId(profile))))}</code></a>
+	{/if}
 	<button type="button" class="btn btn-primary" onclick={async () => {verified = await verifyCode(); failed = !verified}}>Verify</button>
 	{#if verified === true}
 		<div class="flex flex-row gap-2">
@@ -100,7 +99,7 @@
 	{#if failed === true}
 		<div class="flex flex-row gap-2">
 			<p class="text-error text-lg font-bold">Failure!</p>
-			<p class="text-error">Failed to verify your account. Please refresh and try again.</p>
+			<p class="text-error">Failed to verify your account. You must refresh before attempting to verify again.</p>
 		</div>
 	{/if}
 </div>
