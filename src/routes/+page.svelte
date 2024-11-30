@@ -32,6 +32,7 @@
     }
 
     let verified = $state(false);
+    let failed = $state(false);
 </script>
 
 <div class="navbar bg-base-300">
@@ -89,11 +90,17 @@
 			alert("Code copied to clipboard.")
 		},
 	}}><code>{code}</code></a>
-	<button type="button" class="btn btn-primary" onclick={async () => {verified = await verifyCode()}}>Verify</button>
+	<button type="button" class="btn btn-primary" onclick={async () => {verified = await verifyCode(); failed = !verified}}>Verify</button>
 	{#if verified === true}
 		<div class="flex flex-row gap-2">
 			<p class="text-success text-lg font-bold">Success!</p>
 			<p class="text-success">Your account has successfully been verified.</p>
+		</div>
+	{/if}
+	{#if failed === true}
+		<div class="flex flex-row gap-2">
+			<p class="text-error text-lg font-bold">Failure!</p>
+			<p class="text-error">Failed to verify your account. Please refresh and try again.</p>
 		</div>
 	{/if}
 </div>
