@@ -7,6 +7,7 @@ export async function load({ fetch }) {
         user: {
             uuid: user["uuid"],
             email: user["email"],
+            username: user["username"],
         }
     };
 }
