@@ -50,7 +50,7 @@
 <div class="flex flex-col items-center w-screen mt-16 gap-y-4">
 	<h1 class="text-6xl font-bold text-secondary">Verification</h1>
 	<h2 class="text-2xl text-accent">Instructions</h2>
-	<ol class="list-decimal w-1/4">
+	<ol class="list-decimal w-screen lg:w-1/4 px-8">
 		<li>
 			<p>Enter your username</p>
 			<input class="input input-bordered w-full mt-4 mb-2" placeholder="Enter username" type="text" name="profile"
@@ -66,8 +66,9 @@
 			<li>
 				<p>In Warframe, enter the following into the name of your currently-equipped loadout</p>
 				<div class="flex flex-row justify-center items-center gap-4">
-					<div class="border my-2 py-2 w-min mx-auto col-span-3 grow">
-						<a href={"javascript:void(0)"} use:copy={hash} class="text-2xl mx-2"><code class="code">{hash}</code></a>
+					<div class="flex flex-row border my-2 py-2 w-full mx-auto col-span-3">
+						<a href={"javascript:void(0)"} use:copy={hash} class="text-2xl mx-2 grow"><code class="code">{hash}</code></a>
+						<p class="italic mr-4">Click to copy</p>
 					</div>
 					<button type="button" class="btn btn-primary" onclick={() => {done=true}} disabled={done}>Done</button>
 				</div>
@@ -80,6 +81,6 @@
 	{#if verified}
 		<p class="text-success">Successfully verified.</p>
 	{:else if verificationAttempted && !verified}
-		<p class="text-error">Failed to verify. Please try again in 5-10 minutes.</p>
+		<p class="text-error">Failed to verify. Re-confirm your details and/or try again in 5-10 minutes.</p>
 	{/if}
 </div>
