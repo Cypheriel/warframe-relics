@@ -8,16 +8,21 @@ export async function GET({ cookies, platform }) {
     const db = platform.env.DATABASE;
 
     const session = await verifySessionCookie(cookies, db);
+
+    if (session == null) {
+        return new Response(null, { status: 401 });
+    }
+
     const userRecord = await db
         .prepare(`
             SELECT *
             FROM users
             WHERE uuid = ?
         `)
-        .bind(session?.userUuid)
+        .bind(session.userUuid)
         .first();
 
     return userRecord != null
         ? new Response(JSON.stringify(userRecord), { status: 200 })
-        : new Response(null, { status: 401 });
+        : new Response(null, { status: 500 });
 }

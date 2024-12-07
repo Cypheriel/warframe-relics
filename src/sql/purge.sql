@@ -1,4 +1,6 @@
 -- noinspection SqlWithoutWhereForFile
 
-DELETE FROM sessions;
-DELETE FROM users;
+DROP TABLE sessions;
+DROP TABLE users;
+DROP TABLE relic_rewards;
+DROP TABLE relics;
