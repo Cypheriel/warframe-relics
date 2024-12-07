@@ -1,7 +1,7 @@
 import { decompress } from "lzma-js-simple";
 
 export let publicExportIndex: { [_: string]: unknown };
-export const publicExportData: { [_: string]: unknown } = {
+export const publicExportData: { [_: string]: [{[_: string]: unknown}] } = {
     "ExportRelicArcane": null,
 };
 let language: string;

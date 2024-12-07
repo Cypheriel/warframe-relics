@@ -16,5 +16,10 @@ export async function GET({ platform }) {
         }
     }
 
-    return Response.json(publicExportData["ExportRelicArcane"]);
+    const data = publicExportData["ExportRelicArcane"];
+    const result = data.filter((item) => {
+        return item["uniqueName"].startsWith("/Lotus/Types/Game/Projections/");
+    })
+
+    return Response.json(result);
 }
