@@ -1,12 +1,8 @@
 name = "relics"
-account_id = "b1a7f24ebd961510d1d93a3c1838b782"
 
-main = "./.cloudflare/worker.js"
-site.bucket = "./.cloudflare/public"
+pages_build_output_dir = "./.svelte-kit/cloudflare/"
 
-build.command = "npm run build"
-compatibility_date = "2024-11-27"
-workers_dev = true
+compatibility_date = "2024-11-06"
 
 compatibility_flags = [ "nodejs_compat" ]
 
