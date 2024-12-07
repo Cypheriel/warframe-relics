@@ -16,5 +16,5 @@ export async function GET({ platform }) {
         }
     }
 
-    return new Response(JSON.stringify(publicExportData["ExportRelicArcane"]));
+    return Response.json(publicExportData["ExportRelicArcane"]);
 }
